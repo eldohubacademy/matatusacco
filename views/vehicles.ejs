@@ -5,12 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vehicles</title>
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="vehicles.css" />
   </head>
   <body>
     <%- include("_header.ejs") %>
     <main>
       <h1>Nganya Sacco Vehicles</h1>
-
+      
+      <div class="cars">
+        <%    vehicles.forEach(unit=>{   %>
+          <div class="unit">
+            <a href="/vehicle?plate=<%= unit.NumberPlate %>">
+              <h2><%= unit.NumberPlate %></h2>
+            </a>
+            <p> <%= unit.Model %> </p>
+            <p>Capacity: <%= unit.capacity %></p>
+            <p>Last Service <%= new Date(unit.LastService).toLocaleDateString("en-GB")  %></p>
+            <p> Owner:  <a href="/owner?id=<%= unit.OwnerID %>"> <%= unit.FullName %> </a>  </p>
+          </div>
+        <% }) %>
+      </div>
     </main>
     
   </body>

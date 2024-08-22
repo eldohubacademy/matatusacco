@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Details</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <%- include("_header.ejs")%>
+    <main>
+        <% if(locals.message){ %>
+            <h1><%= message%></h1>
+        <%} else{%>
+            <section class="info">
+        
+                <h1> <%= vehicle.NumberPlate %> </h1>
+
+                <p> Model: <%vehicle.Model %> </p>
+
+                <p> Driver: <a href="/driver?id=">Drivers Name</a> </p>
+
+                <a href="/newtrip" class="new-trip">New Trip</a>
+            </section>
+
+            <section class="trips">
+                <h2>All trips</h2>
+                <p>table</p>
+            </section>
+        <%}%>
+    </main>
+</body>
+</html>

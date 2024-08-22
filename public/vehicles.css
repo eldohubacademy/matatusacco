@@ -1,0 +1,19 @@
+.cars{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.unit{
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+.unit h2{
+    font-size: 22px;
+    margin: 0;
+    color: rgb(3, 3, 58);
+}
+.unit p a{
+    font-weight: bold;
+}
