@@ -7,18 +7,20 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <%- include("_header.ejs")%>
+    <%- include("_header.ejs") %>
     <main>
         <% if(locals.message){ %>
-            <h1><%= message%></h1>
-        <%} else{%>
+            <h1><%= message %></h1>
+        <%} else{ %>
             <section class="info">
         
                 <h1> <%= vehicle.NumberPlate %> </h1>
 
-                <p> Model: <%vehicle.Model %> </p>
+                <p> Model: <%= vehicle.Model %> </p>
 
-                <p> Driver: <a href="/driver?id=">Drivers Name</a> </p>
+                <p> Driver: <a href="/driver?id=<%vehicle.ID_NO%> "><%= vehicle.FullName %></a> </p>
+
+                <p> Phone: <a href="tel:<%=vehicle.phone%>"><%= vehicle.phone %></a> </p>
 
                 <a href="/newtrip" class="new-trip">New Trip</a>
             </section>
@@ -27,7 +29,7 @@
                 <h2>All trips</h2>
                 <p>table</p>
             </section>
-        <%}%>
+        <% } %>
     </main>
 </body>
 </html>

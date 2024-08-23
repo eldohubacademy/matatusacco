@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matatu Owner</title>
+    <link rel="stylesheet" href="main.css">
+    <style>
+        table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+    </style>
+</head>
+<body>
+    <%- include("_header.ejs") %>
+    <main>
+        <% if(locals.message){ %>
+            <h1> <%= message%> </h1>
+        <% } else{ %>
+                <section class="owner">
+                    <h1> <%= ownerData[0].FullName %> </h1>
+                    <p>Phone: <a href="tel:<%= ownerData[0].phone %> "> <%= ownerData[0].phone %> </a> </p>
+                    <p>Email: <a href="mailto:<%= ownerData[0].Email %> "> <%= ownerData[0].Email %> </a></p>
+                </section>
+                <section class="vehicles">
+                    <table>
+                        <tr>
+                            <th>Model</th>
+                            <th>Number Plate</th>
+                            <th>Capacity</th>
+                            <th>Last Service Date</th>
+                        </tr>
+                        <% ownerData.forEach(data=>{ %>
+                            <tr>
+                                <td> <%= data.Model%> </td>
+                                <td> <%= data.NumberPlate%> </td>
+                                <td> <%= data.capacity%> </td>
+                                <td> <%= new Date(data.LastService).toLocaleDateString("en-GB") %> </td>
+                            </tr>
+                        <% }) %>
+                    </table>
+                </section>
+        <% } %>
+    </main>
+</body>
+</html>

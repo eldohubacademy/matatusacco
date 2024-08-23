@@ -31,7 +31,7 @@ app.get("/vehicle",(req,res)=>{
   if(!req.query.plate){
     res.render("vehicle.ejs", {message: "No vehicle selected"})
   }else{
-    dbconnection.query(`SELECT * FROM vehicles WHERE NumberPlate = "${req.query.plate}" ` , (sqlErr,vehicle)=>{
+    dbconnection.query(`SELECT * FROM vehicles JOIN drivers ON vehicles.NumberPlate = drivers.AssignedVehicle WHERE NumberPlate = "${req.query.plate}" ` , (sqlErr,vehicle)=>{
        if(sqlErr){
         res.status(500).send("Server Error!!")
        }else{
@@ -44,6 +44,26 @@ app.get("/vehicle",(req,res)=>{
        }
     })
   }  
+})
+
+app.get("/owner", (req,res)=>{
+  // indivual owner route
+  if(!req.query.id){
+    res.render("owner.ejs", {message: "No owner selected"})
+  }else{
+    dbconnection.query(`SELECT * FROM owners JOIN vehicles ON owners.ID_NO = vehicles.OwnerID WHERE OwnerID="${req.query.id}"`, (sqlErr, ownerData)=>{
+      if(sqlErr){
+        res.status(500).send("Server Error!!")
+       }else{
+          if(ownerData.length > 0){
+            res.render("owner.ejs", {ownerData})
+          }else{
+            res.render("owner.ejs", {message: "No owner Found(wrong id provided) "})
+          }
+       }
+    })
+
+  }
 })
 
 
