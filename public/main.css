@@ -34,3 +34,31 @@ main{
   padding: 15px 20px;
   border-radius: 8px;
 }
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.btn.success{
+  background-color: green;
+  color: white;
+  padding: 10px 17px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: block;
+  width: max-content;
+  font-size: 14px;
+}

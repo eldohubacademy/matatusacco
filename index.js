@@ -9,7 +9,12 @@ const dbconnection = mysql.createConnection({
 })
 
 const app = express();
-app.use(express.static("public"));
+
+app.use(express.static("public")); // middleware --- app.use(func) - func will executed on every request
+app.use((req,res, next)=>{
+  console.log("Middleware Function") // authorization -- block some route 
+  next() 
+})
 
 app.get("/", (req, res) => {
   // home/root page/route/path
@@ -27,7 +32,7 @@ app.get("/vehicles", (req, res) => {
 });
 app.get("/vehicle",(req,res)=>{
   // individual vehicle route
-  console.log( req.query.plate);
+  
   if(!req.query.plate){
     res.render("vehicle.ejs", {message: "No vehicle selected"})
   }else{
@@ -35,15 +40,38 @@ app.get("/vehicle",(req,res)=>{
        if(sqlErr){
         res.status(500).send("Server Error!!")
        }else{
-        console.log(vehicle); 
         if(vehicle.length > 0){
-          res.render("vehicle.ejs", {vehicle: vehicle[0]})
+          dbconnection.query(`SELECT * FROM trips JOIN routes ON trips.Route = routes.route_id WHERE Vehicle = "${req.query.plate}"`, (error, trips)=>{
+            if(error){
+              res.status(500).send("Server Error!!")
+            }else{              
+              res.render("vehicle.ejs", {vehicle: vehicle[0], trips: trips})
+            }
+          })  
         }else{
           res.render("vehicle.ejs", {message: "No vehicle Found / Invalid vehicle plate"})
         }
        }
     })
   }  
+})
+
+
+app.get("/newtrip", (req,res)=>{
+  if(!req.query.plate){
+    res.render("newtrip.ejs", {message: "No vehicle selected"})
+  }else{
+    dbconnection.query("SELECT * FROM routes", (err, routes)=>{
+      if(err){
+        res.status(500).send("Server Error!!")
+      }else{
+        res.render("newtrip.ejs", {numberPlate: req.query.plate, routes: routes })
+      }
+    })
+  }
+})
+app.post("/newtrip", (req,res)=>{
+  //
 })
 
 app.get("/owner", (req,res)=>{

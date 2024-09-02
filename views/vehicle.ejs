@@ -27,7 +27,26 @@
 
             <section class="trips">
                 <h2>All trips</h2>
-                <p>table</p>
+                    <table>
+                        <tr>
+                            <th>Route</th>
+                            <th>Distance</th>
+                            <th>Amount Recieved</th>
+                            <th>Departure</th>
+                            <th>Trip Status</th>
+                        </tr>
+                        <% trips.forEach(trip=>{ %>
+                            <tr>
+                                <td> <%= trip.Label %> </td>
+                                <td> <%= trip.DistanceKM %> </td>
+                                <td> <%= trip.PricePerPassenger * vehicle.capacity %> </td>
+                                <td> <%= trip.Departure %> </td>
+                                <td> <%= trip.TripStatus %> </td>                                
+                            </tr>
+                        <% }) %>
+                    </table>
+
+
             </section>
         <% } %>
     </main>

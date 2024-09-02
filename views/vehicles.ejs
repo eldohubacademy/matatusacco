@@ -22,6 +22,7 @@
             <p>Capacity: <%= unit.capacity %></p>
             <p>Last Service <%= new Date(unit.LastService).toLocaleDateString("en-GB")  %></p>
             <p> Owner:  <a href="/owner?id=<%= unit.OwnerID %>"> <%= unit.FullName %> </a>  </p>
+            <a href="/newtrip?plate=<%= unit.NumberPlate %>" class="btn success">New Trip</a>
           </div>
         <% }) %>
       </div>
