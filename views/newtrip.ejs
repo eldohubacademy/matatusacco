@@ -14,19 +14,19 @@
         <main>
             <h1>New Trip</h1>
 
-            <h2><%= numberPlate%></h2>
+            <h2><%= numberPlate %></h2>
 
-            <form action="/newtrip" method="post">
+            <form action="http://localhost:3003/newtrip" method="post">
+                <input type="hidden" name="numberPlate" value="<%= numberPlate %>" >
                 <label for="route">Choose Route</label>
-                <select name="route" id="route">
-                    <option value="0"></option>
+                <select name="route" id="route" required>
                     <% routes.forEach(r=>{%>
                         <option value="<%=r.route_id%>"><%=r.Label%>  </option>
                     <%})%>
                 </select>
                 <br>
                 <label for="departure">Departure</label>
-                <input type="datetime-local" name="departure" id="departure">
+                <input type="datetime-local" name="departure" id="departure" required>
                 <br>
 
                 <input type="submit" value="Submit">

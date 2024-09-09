@@ -1,8 +1,9 @@
-const express = require("express");
+const express = require("express") // import express from express -- es6 (2015)
+
 const mysql = require("mysql")
 
 const dbconnection = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
   password: "",
   database: "matatusacco"
@@ -11,15 +12,18 @@ const dbconnection = mysql.createConnection({
 const app = express();
 
 app.use(express.static("public")); // middleware --- app.use(func) - func will executed on every request
+app.use(express.urlencoded({extended: true})) // express urlencoded
 app.use((req,res, next)=>{
   console.log("Middleware Function") // authorization -- block some route 
   next() 
 })
 
+
 app.get("/", (req, res) => {
   // home/root page/route/path
   res.render("home.ejs");
 });
+
 app.get("/vehicles", (req, res) => {
   // all vehicles route
   dbconnection.query("SELECT * FROM vehicles JOIN owners ON vehicles.OwnerID = owners.ID_NO", (sqlErr,vehicles)=>{
@@ -30,6 +34,7 @@ app.get("/vehicles", (req, res) => {
     }
   })
 });
+
 app.get("/vehicle",(req,res)=>{
   // individual vehicle route
   
@@ -70,10 +75,30 @@ app.get("/newtrip", (req,res)=>{
     })
   }
 })
+
 app.post("/newtrip", (req,res)=>{
-  //
+  console.log( req.body ); /// data in the form
+  const {numberPlate, route, departure}= req.body
+  dbconnection.query(`INSERT INTO trips(Route,Vehicle,Departure,TripStatus) VALUE(${route},"${numberPlate}", "${departure.replace("T", " ") + ":00" }","Scheduled")`, (sqlErr)=>{
+    if(sqlErr){
+      res.status(500).render("500.ejs")
+    }else{
+      res.redirect(`/vehicle?plate=${numberPlate}`)
+    }
+  } )
 })
 
+app.get("/updatetrip", (req,res)=>{
+  dbconnection.query(`UPDATE trips SET TripStatus = "${req.query.value}" WHERE trip_id = ${req.query.trip}`, (sqrErr)=>{
+    if(sqrErr){
+      res.status(500).render("500.ejs")
+    }else{
+      res.redirect(`/vehicle?plate=${req.query.plate}`)
+    }
+  })
+})
+
+// curl, postman, html(browser) -- http clients
 app.get("/owner", (req,res)=>{
   // indivual owner route
   if(!req.query.id){

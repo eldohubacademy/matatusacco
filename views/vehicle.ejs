@@ -34,6 +34,7 @@
                             <th>Amount Recieved</th>
                             <th>Departure</th>
                             <th>Trip Status</th>
+                            <th>Actions</th>
                         </tr>
                         <% trips.forEach(trip=>{ %>
                             <tr>
@@ -41,7 +42,17 @@
                                 <td> <%= trip.DistanceKM %> </td>
                                 <td> <%= trip.PricePerPassenger * vehicle.capacity %> </td>
                                 <td> <%= trip.Departure %> </td>
-                                <td> <%= trip.TripStatus %> </td>                                
+                                <td> <%= trip.TripStatus %> </td>  
+                                <td>
+                                    <% if(trip.TripStatus == "Scheduled"){ %>
+                                        <a href="/updatetrip?value=Ongoing&plate=<%=vehicle.NumberPlate%>&trip=<%= trip.trip_id %>">Start</a>
+                                        <a href="/updatetrip?value=Cancelled&plate=<%=vehicle.NumberPlate%>&trip=<%=trip.trip_id%>">Cancel</a>
+                                    <%}else if(trip.TripStatus == "Ongoing"){ %>
+                                        <a href="/updatetrip?value=Completed&plate=<%=vehicle.NumberPlate%>&trip=<%=trip.trip_id%>">Complete</a>
+                                    <%}else{%>
+                                        No action
+                                    <%}%>
+                                 </td>                              
                             </tr>
                         <% }) %>
                     </table>

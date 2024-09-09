@@ -46,7 +46,14 @@ td, th {
   text-align: left;
   padding: 8px;
 }
-
+td a{
+  background-color: rgb(61, 61, 61);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 2px;
+}
 tr:nth-child(even) {
   background-color: #dddddd;
 }
