@@ -106,7 +106,7 @@ app.get("/owner", (req,res)=>{
   }else{
     dbconnection.query(`SELECT * FROM owners JOIN vehicles ON owners.ID_NO = vehicles.OwnerID WHERE OwnerID="${req.query.id}"`, (sqlErr, ownerData)=>{
       if(sqlErr){
-        res.status(500).send("Server Error!!")
+        res.status(500).render("500.ejs")
        }else{
           if(ownerData.length > 0){
             res.render("owner.ejs", {ownerData})
@@ -117,6 +117,34 @@ app.get("/owner", (req,res)=>{
     })
 
   }
+})
+
+
+app.get("/drivers", (req,res)=>{
+  // get drivers info from the db
+  dbconnection.query("SELECT FullName, phone, AssignedVehicle FROM drivers", (sqlErr,drivers)=>{
+    if(sqlErr){
+      res.status(500).render("500.ejs")
+    }else{
+      dbconnection.query("select NumberPlate from vehicles where NumberPlate NOT IN(SELECT AssignedVehicle FROM drivers)", (sqlErr, plates)=>{
+        if(sqlErr){
+          res.status(500).render("500.ejs")
+        }else{
+          res.render("drivers.ejs", {drivers, plates})
+        }
+      })
+    }
+  })
+})
+
+app.get("/remove-driver", (req,res)=>{
+  dbconnection.query(`DELETE FROM drivers WHERE AssignedVehicle = "${req.query.plate}"`, (sqlErr)=>{
+    if(sqlErr){
+      res.status(500).render("500.ejs")
+    }else{
+      res.redirect("/drivers")
+    }
+  })
 })
 
 
