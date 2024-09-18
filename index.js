@@ -1,4 +1,6 @@
 const express = require("express") // import express from express -- es6 (2015)
+const multer  = require('multer')
+const upload = multer({ dest: 'public/images/' })
 
 const mysql = require("mysql")
 
@@ -79,7 +81,7 @@ app.get("/newtrip", (req,res)=>{
 app.post("/newtrip", (req,res)=>{
   console.log( req.body ); /// data in the form
   const {numberPlate, route, departure}= req.body
-  dbconnection.query(`INSERT INTO trips(Route,Vehicle,Departure,TripStatus) VALUE(${route},"${numberPlate}", "${departure.replace("T", " ") + ":00" }","Scheduled")`, (sqlErr)=>{
+  dbconnection.query(`INSERT INTO trips(Route,Vehicle,Departure,TripStatus) VALUES(${route},"${numberPlate}", "${departure.replace("T", " ") + ":00" }","Scheduled")`, (sqlErr)=>{
     if(sqlErr){
       res.status(500).render("500.ejs")
     }else{
@@ -122,7 +124,7 @@ app.get("/owner", (req,res)=>{
 
 app.get("/drivers", (req,res)=>{
   // get drivers info from the db
-  dbconnection.query("SELECT FullName, phone, AssignedVehicle FROM drivers", (sqlErr,drivers)=>{
+  dbconnection.query("SELECT FullName, phone, AssignedVehicle, profile FROM drivers", (sqlErr,drivers)=>{
     if(sqlErr){
       res.status(500).render("500.ejs")
     }else{
@@ -147,6 +149,17 @@ app.get("/remove-driver", (req,res)=>{
   })
 })
 
+app.post("/newdriver", upload.single("picture") , (req,res)=>{
+  dbconnection.query(`INSERT INTO drivers(ID_NO, FullName, phone,email,address,AssignedVehicle,profile) VALUES(${req.body.id},"${req.body.fullname}","${req.body.phone}", "${req.body.email}","${req.body.address}", "${req.body.vehicle}","${req.file.filename}")`, (sqlErr)=>{
+    if(sqlErr){     
+      res.status(500).render("500.ejs")
+    }else{
+      res.redirect("/drivers")
+    }
+  })
+})
+
+// implement multer js in your project -- upload a file-- img,pdf,
 
 // other routes
 app.get("*", (req,res)=>{

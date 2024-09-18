@@ -10,7 +10,7 @@
     <%- include("_header.ejs") %>
     <main>
         <section class="newdriver">
-            <form action="" method="post">
+            <form action="/newdriver" method="post"   enctype="multipart/form-data">
                     <label for="id">ID Number</label>
                     <input type="number" name="id" id="id">
                     <br>
@@ -27,13 +27,13 @@
                     <input type="text" name="address" id="address">
                     <br>
                     <label for="picture">Picture</label>
-                    <input type="file" name="picture" id="picture">
+                    <input type="file" name="picture" id="picture" >
                     <br>
                     <label for="vehicle">Assigned Vehicle</label>
                     <% if( locals.plates.length > 0 ){ %>
                         <select name="vehicle" id="vehicle">
                             <% plates.forEach(plate=>{ %>
-                                <option value="<%=plate %>"> <%= plate.NumberPlate %> </option>
+                                <option value="<%=plate.NumberPlate%>"> <%= plate.NumberPlate %> </option>
                             <% }) %>
                         </select>
                         <br>
@@ -47,7 +47,7 @@
         <section class="drivers">
             <% drivers.forEach(driver=>{ %>
                 <div>
-                    <img src="/images/kamau.jpg" alt="kamau profile image" width="200px">
+                    <img src="/images/<%=driver.profile%>" alt="kamau profile image" width="200px">
                     <h2><%= driver.FullName %></h2>
                     <p>Phone: <%= driver.phone %> </p>
                     <a href="/vehicle?plate=<%=driver.AssignedVehicle%>">
